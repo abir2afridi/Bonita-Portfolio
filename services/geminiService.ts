@@ -1,0 +1,46 @@
+import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
+
+// Initialize Gemini API
+const apiKey = process.env.API_KEY || '';
+const ai = new GoogleGenAI({ apiKey });
+
+const systemInstruction = `
+You are "Bonita AI", a helpful creative assistant for Bonita Rizka's portfolio website.
+Bonita is a Graphic Layouter and Brand Designer based in Indonesia.
+Her style is minimalist, elegant, editorial, and focused on clean typography.
+
+Your goal is to answer visitor questions about Bonita's work, experience, or design philosophy.
+If asked about design advice, give brief, professional tips aligned with modern minimalist design.
+Keep answers concise (under 100 words) and friendly.
+
+Key Profile Data:
+- Name: Bonita Rizka D.
+- Role: Graphic Layouter & Brand Designer.
+- Education: Institut Teknologi Sepuluh Nopember (Industrial Design, GPA 3.27).
+- Skills: Adobe Illustrator, Adobe Photoshop, After Effects, Figma, Canva, Capcut.
+- Languages: Indonesian (Mother Tongue), English (Communicative).
+- Contact: bonitarizkad@gmail.com.
+
+If the user asks something unrelated to design or the portfolio, politely steer them back.
+`;
+
+export const sendMessageToGemini = async (message: string): Promise<string> => {
+  if (!apiKey) {
+    return "API Key is missing. Please check the environment configuration.";
+  }
+
+  try {
+    const response: GenerateContentResponse = await ai.models.generateContent({
+      model: 'gemini-2.5-flash',
+      contents: message,
+      config: {
+        systemInstruction: systemInstruction,
+      }
+    });
+
+    return response.text || "I couldn't generate a response at the moment.";
+  } catch (error) {
+    console.error("Gemini API Error:", error);
+    return "Sorry, I'm having trouble connecting to my creative brain right now.";
+  }
+};
