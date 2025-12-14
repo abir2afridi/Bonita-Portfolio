@@ -26,7 +26,7 @@
               'fade-in-up': 'fadeInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
               'float': 'float 6s ease-in-out infinite',
               'spin-slow': 'spin 12s linear infinite',
-              'scroll': 'scroll 20s linear infinite',
+              'scroll': 'scroll 50s linear infinite',
             },
             keyframes: {
               fadeInUp: {
@@ -74,6 +74,10 @@
       }
       ::-webkit-scrollbar-thumb:hover {
         background: #a8a29e; 
+      }
+      /* Pause animation on hover */
+      .group:hover .animate-scroll {
+        animation-play-state: paused;
       }
     </style>
   <script type="importmap">

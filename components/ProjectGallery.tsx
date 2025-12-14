@@ -106,9 +106,21 @@ const ProjectCard: React.FC<ProjectCardProps> = ({ project, onClick }) => {
 
 const ProjectGallery: React.FC = () => {
   const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [activeFilter, setActiveFilter] = useState('All');
+
+  const graphicCategories = Array.from(new Set(projects.map(p => p.category)));
+  const filterCategories = ['All', ...graphicCategories, 'Photography'];
+
+  const filteredGraphicProjects = activeFilter === 'All' 
+    ? projects 
+    : projects.filter(p => p.category === activeFilter);
+  
+  const showGraphicSection = filteredGraphicProjects.length > 0;
+  // Show photography only if 'All' or explicitly 'Photography'
+  const showPhotographySection = activeFilter === 'All' || activeFilter === 'Photography';
 
   return (
-    <section className="w-full bg-paper py-16 px-6 md:px-12 relative">
+    <section className="w-full bg-paper py-16 px-6 md:px-12 relative min-h-screen">
       
       {/* Modal Overlay */}
       {selectedProject && (
@@ -118,24 +130,46 @@ const ProjectGallery: React.FC = () => {
         />
       )}
 
-      {/* Graphic Design Section */}
-      <div className="max-w-7xl mx-auto mb-20">
-        <h2 className="text-sm font-bold uppercase tracking-widest text-stone-400 mb-8 border-b border-stone-300 pb-2">
-            Selected Graphic Works
-        </h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {projects.map((p) => (
-            <ProjectCard 
-              key={p.id} 
-              project={p} 
-              onClick={setSelectedProject}
-            />
+      {/* Filter Bar */}
+      <div className="max-w-7xl mx-auto mb-16">
+        <div className="flex flex-wrap justify-center gap-3 md:gap-4">
+          {filterCategories.map(cat => (
+            <button 
+              key={cat}
+              onClick={() => setActiveFilter(cat)}
+              className={`text-xs md:text-sm font-bold uppercase tracking-widest px-5 py-2 rounded-full transition-all duration-300 border ${
+                  activeFilter === cat 
+                  ? 'bg-ink text-white border-ink shadow-lg transform scale-105' 
+                  : 'bg-transparent text-stone-500 border-stone-300 hover:border-ink hover:text-ink'
+              }`}
+            >
+              {cat}
+            </button>
           ))}
         </div>
       </div>
 
+      {/* Graphic Design Section */}
+      {showGraphicSection && (
+        <div className="max-w-7xl mx-auto mb-20 animate-in fade-in duration-500">
+          <h2 className="text-sm font-bold uppercase tracking-widest text-stone-400 mb-8 border-b border-stone-300 pb-2">
+              Selected Graphic Works
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {filteredGraphicProjects.map((p) => (
+              <ProjectCard 
+                key={p.id} 
+                project={p} 
+                onClick={setSelectedProject}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
       {/* Photography Section */}
-      <div className="max-w-7xl mx-auto">
+      {showPhotographySection && (
+        <div className="max-w-7xl mx-auto animate-in fade-in duration-500">
          <h2 className="text-sm font-bold uppercase tracking-widest text-stone-400 mb-8 border-b border-stone-300 pb-2">
             Photography & Styling
         </h2>
@@ -164,6 +198,13 @@ const ProjectGallery: React.FC = () => {
             ))}
         </div>
       </div>
+      )}
+
+      {!showGraphicSection && !showPhotographySection && (
+         <div className="max-w-7xl mx-auto text-center py-20 text-stone-400">
+            No projects found in this category.
+         </div>
+      )}
 
     </section>
   );

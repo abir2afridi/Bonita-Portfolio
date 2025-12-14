@@ -68,14 +68,14 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Live Ticker (Marquee) */}
-        <div className="relative w-[120%] -rotate-2 bg-ink py-3 md:py-4 z-30 overflow-hidden shadow-2xl border-y border-white/10 mix-blend-normal my-4 md:my-2">
+        <div className="relative w-[120%] -rotate-2 bg-ink py-3 md:py-4 z-30 overflow-hidden shadow-2xl border-y border-white/10 mix-blend-normal my-4 md:my-2 group">
           <div className="flex w-max">
-              <div className="animate-scroll whitespace-nowrap flex gap-0 min-w-full items-center">
+              <div className="animate-scroll whitespace-nowrap flex gap-0 min-w-full items-center will-change-transform">
                   {Array(8).fill(marqueeText).map((text, i) => (
                       <span key={i} className="text-[#f3f1ea] font-bold text-sm md:text-2xl tracking-[0.3em] uppercase opacity-90 px-4">{text}</span>
                   ))}
               </div>
-              <div className="animate-scroll whitespace-nowrap flex gap-0 min-w-full items-center" aria-hidden="true">
+              <div className="animate-scroll whitespace-nowrap flex gap-0 min-w-full items-center will-change-transform" aria-hidden="true">
                   {Array(8).fill(marqueeText).map((text, i) => (
                       <span key={i} className="text-[#f3f1ea] font-bold text-sm md:text-2xl tracking-[0.3em] uppercase opacity-90 px-4">{text}</span>
                   ))}
