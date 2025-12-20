@@ -1,8 +1,20 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-// Initialize Gemini API
-const apiKey = (typeof process !== 'undefined' && process.env.API_KEY) || '';
-const ai = new GoogleGenAI({ apiKey });
+/**
+ * Safely retrieves the API key from the environment.
+ * Prevents "process is not defined" errors in browser environments.
+ */
+const getApiKey = (): string => {
+  try {
+    // Check if process and process.env exist before accessing
+    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
+      return process.env.API_KEY;
+    }
+  } catch (e) {
+    console.warn("Could not access process.env.API_KEY safely:", e);
+  }
+  return '';
+};
 
 const systemInstruction = `
 You are "Bonita AI", a helpful creative assistant for Bonita Rizka's portfolio website.
@@ -20,16 +32,20 @@ Key Profile Data:
 - Skills: Adobe Illustrator, Adobe Photoshop, After Effects, Figma, Canva, Capcut.
 - Languages: Indonesian (Mother Tongue), English (Communicative).
 - Contact: bonitarizkad@gmail.com.
-
-If the user asks something unrelated to design or the portfolio, politely steer them back.
 `;
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
+  const apiKey = getApiKey();
+
   if (!apiKey) {
-    return "The creative assistant's connection is missing its API key. Please configure the environment.";
+    console.error("API_KEY is missing. Please check your environment variables.");
+    return "I'm currently resting. (AI Assistant needs an API Key to wake up).";
   }
 
   try {
+    // Initialize inside the function to ensure the key is fresh and it doesn't crash on module load
+    const ai = new GoogleGenAI({ apiKey });
+    
     const response: GenerateContentResponse = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: message,
@@ -38,9 +54,9 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
       }
     });
 
-    return response.text || "I couldn't generate a response at the moment.";
+    return response.text || "I processed your request but have no words right now.";
   } catch (error) {
     console.error("Gemini API Error:", error);
-    return "Sorry, I'm having trouble connecting to my creative brain right now.";
+    return "I'm having a little trouble connecting to my creative brain. Please try again later!";
   }
 };
