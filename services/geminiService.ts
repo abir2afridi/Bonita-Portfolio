@@ -1,20 +1,5 @@
-import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
-/**
- * Safely retrieves the API key from the environment.
- * Prevents "process is not defined" errors in browser environments.
- */
-const getApiKey = (): string => {
-  try {
-    // Check if process and process.env exist before accessing
-    if (typeof process !== 'undefined' && process.env && process.env.API_KEY) {
-      return process.env.API_KEY;
-    }
-  } catch (e) {
-    console.warn("Could not access process.env.API_KEY safely:", e);
-  }
-  return '';
-};
+import { GoogleGenAI } from "@google/genai";
 
 const systemInstruction = `
 You are "Bonita AI", a helpful creative assistant for Bonita Rizka's portfolio website.
@@ -35,18 +20,12 @@ Key Profile Data:
 `;
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
-  const apiKey = getApiKey();
-
-  if (!apiKey) {
-    console.error("API_KEY is missing. Please check your environment variables.");
-    return "I'm currently resting. (AI Assistant needs an API Key to wake up).";
-  }
-
   try {
-    // Initialize inside the function to ensure the key is fresh and it doesn't crash on module load
-    const ai = new GoogleGenAI({ apiKey });
+    // Correct initialization using named parameter and direct process.env.API_KEY access
+    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
     
-    const response: GenerateContentResponse = await ai.models.generateContent({
+    // Using ai.models.generateContent with model and prompt as required
+    const response = await ai.models.generateContent({
       model: 'gemini-3-flash-preview',
       contents: message,
       config: {
@@ -54,6 +33,7 @@ export const sendMessageToGemini = async (message: string): Promise<string> => {
       }
     });
 
+    // Accessing .text property directly (not as a method)
     return response.text || "I processed your request but have no words right now.";
   } catch (error) {
     console.error("Gemini API Error:", error);

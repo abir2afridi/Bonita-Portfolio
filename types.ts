@@ -1,3 +1,4 @@
+
 export interface Project {
   id: string;
   title: string;
@@ -14,8 +15,8 @@ export interface Skill {
   level?: string;
 }
 
+// Added to fix the missing export error in CreativeAssistant.tsx
 export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
-  isError?: boolean;
 }

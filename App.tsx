@@ -1,9 +1,10 @@
+
 import React, { useEffect, useState } from 'react';
 import Hero from './components/Hero';
 import Profile from './components/Profile';
 import ProjectGallery from './components/ProjectGallery';
-import CreativeAssistant from './components/CreativeAssistant';
 import Footer from './components/Footer';
+import CreativeAssistant from './components/CreativeAssistant';
 
 const App: React.FC = () => {
   const [hasError, setHasError] = useState(false);
@@ -46,6 +47,7 @@ const App: React.FC = () => {
       <Profile />
       <ProjectGallery />
       <Footer />
+      {/* Added Creative Assistant for visitor interaction */}
       <CreativeAssistant />
     </main>
   );
