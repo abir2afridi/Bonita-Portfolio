@@ -1,7 +1,7 @@
 import { GoogleGenAI, GenerateContentResponse } from "@google/genai";
 
 // Initialize Gemini API
-const apiKey = process.env.API_KEY || '';
+const apiKey = (typeof process !== 'undefined' && process.env.API_KEY) || '';
 const ai = new GoogleGenAI({ apiKey });
 
 const systemInstruction = `
@@ -26,12 +26,12 @@ If the user asks something unrelated to design or the portfolio, politely steer 
 
 export const sendMessageToGemini = async (message: string): Promise<string> => {
   if (!apiKey) {
-    return "API Key is missing. Please check the environment configuration.";
+    return "The creative assistant's connection is missing its API key. Please configure the environment.";
   }
 
   try {
     const response: GenerateContentResponse = await ai.models.generateContent({
-      model: 'gemini-2.5-flash',
+      model: 'gemini-3-flash-preview',
       contents: message,
       config: {
         systemInstruction: systemInstruction,

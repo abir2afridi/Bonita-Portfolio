@@ -13,7 +13,31 @@ const Hero: React.FC = () => {
     setMousePosition({ x, y });
   };
 
-  const marqueeText = "BRANDING • EDITORIAL • LAYOUT • ART DIRECTION • SOCIAL MEDIA • PRINT DESIGN • ";
+  const marqueeItems = [
+    { text: "BRANDING", type: "solid" },
+    { text: "EDITORIAL", type: "outline" },
+    { text: "LAYOUT", type: "solid" },
+    { text: "ART DIRECTION", type: "outline" },
+    { text: "SOCIAL MEDIA", type: "solid" },
+    { text: "PRINT DESIGN", type: "outline" },
+    { text: "TYPOGRAPHY", type: "solid" },
+  ];
+
+  const TickerContent = () => (
+    <>
+      {marqueeItems.map((item, i) => (
+        <span 
+          key={i} 
+          className={`text-sm md:text-3xl tracking-[0.3em] uppercase px-8 flex items-center gap-4 ${
+            item.type === 'outline' ? 'text-outline font-black' : 'text-[#f3f1ea] font-bold'
+          }`}
+        >
+          {item.text}
+          <span className="w-2 h-2 rounded-full bg-accent/40 block"></span>
+        </span>
+      ))}
+    </>
+  );
 
   return (
     <section 
@@ -68,17 +92,15 @@ const Hero: React.FC = () => {
         </div>
 
         {/* Live Ticker (Marquee) */}
-        <div className="relative w-[120%] -rotate-2 bg-ink py-3 md:py-4 z-30 overflow-hidden shadow-2xl border-y border-white/10 mix-blend-normal my-4 md:my-2 group">
+        <div className="relative w-[130%] -rotate-2 bg-ink py-4 md:py-6 z-30 overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.3)] border-y-2 border-white/5 mix-blend-normal my-4 md:my-2 group transition-transform duration-500 hover:scale-[1.02]">
           <div className="flex w-max">
               <div className="animate-scroll whitespace-nowrap flex gap-0 min-w-full items-center will-change-transform">
-                  {Array(8).fill(marqueeText).map((text, i) => (
-                      <span key={i} className="text-[#f3f1ea] font-bold text-sm md:text-2xl tracking-[0.3em] uppercase opacity-90 px-4">{text}</span>
-                  ))}
+                  <TickerContent />
+                  <TickerContent />
               </div>
               <div className="animate-scroll whitespace-nowrap flex gap-0 min-w-full items-center will-change-transform" aria-hidden="true">
-                  {Array(8).fill(marqueeText).map((text, i) => (
-                      <span key={i} className="text-[#f3f1ea] font-bold text-sm md:text-2xl tracking-[0.3em] uppercase opacity-90 px-4">{text}</span>
-                  ))}
+                  <TickerContent />
+                  <TickerContent />
               </div>
           </div>
         </div>
