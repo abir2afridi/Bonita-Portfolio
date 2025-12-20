@@ -61,7 +61,6 @@
         -webkit-backdrop-filter: blur(10px);
         border: 1px solid rgba(255, 255, 255, 0.3);
       }
-      /* Custom scrollbar */
       ::-webkit-scrollbar {
         width: 8px;
       }
@@ -75,17 +74,15 @@
       ::-webkit-scrollbar-thumb:hover {
         background: #a8a29e; 
       }
-      /* Pause animation on hover */
       .group:hover .animate-scroll {
         animation-play-state: paused;
       }
-      
       .text-outline {
         -webkit-text-stroke: 1px #f3f1ea;
         color: transparent;
       }
     </style>
-  <script type="importmap">
+    <script type="importmap">
 {
   "imports": {
     "react": "https://esm.sh/react@^19.2.3",
@@ -96,7 +93,7 @@
   }
 }
 </script>
-</head>
+  </head>
   <body>
     <div id="root"></div>
   </body>

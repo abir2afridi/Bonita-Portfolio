@@ -15,7 +15,7 @@ export interface Skill {
   level?: string;
 }
 
-// Added to fix the missing export error in CreativeAssistant.tsx
+// Fixed missing ChatMessage export for components/CreativeAssistant.tsx
 export interface ChatMessage {
   role: 'user' | 'model';
   text: string;
