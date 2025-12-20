@@ -15,7 +15,9 @@ export interface Skill {
   level?: string;
 }
 
-// Fixed missing ChatMessage export for components/CreativeAssistant.tsx
+/**
+ * Fix: Added ChatMessage interface to satisfy the import in CreativeAssistant.tsx
+ */
 export interface ChatMessage {
   role: 'user' | 'model';
   text: string;

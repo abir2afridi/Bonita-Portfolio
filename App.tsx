@@ -18,7 +18,7 @@ const App: React.FC = () => {
       <Profile />
       <ProjectGallery />
       <Footer />
-      {/* Added the Creative Assistant component to enable AI interactivity in the portfolio */}
+      {/* Fix: Added the CreativeAssistant component to the main layout */}
       <CreativeAssistant />
     </main>
   );
